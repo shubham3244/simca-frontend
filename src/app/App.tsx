@@ -1,16 +1,15 @@
-import { RouterProvider } from "react-router-dom"
-import { router } from "../router"
-
-
+import { RouterProvider } from 'react-router-dom';
+import { ConfirmProvider } from '../components/ui/ConfirmDialog';
+import { useSessionBootstrap } from '../features/auth/hooks/useSessionBootstrap';
+import { router } from '../router';
 
 function App() {
-
-
+  useSessionBootstrap();
   return (
-    <>
-<RouterProvider router={router}/>
-    </>
-  )
+    <ConfirmProvider>
+      <RouterProvider router={router} />
+    </ConfirmProvider>
+  );
 }
 
-export default App
+export default App;

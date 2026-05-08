@@ -1,0 +1,133 @@
+@import "tailwindcss";
+
+:root {
+  /* Brand */
+  --background: #ffffff;
+  --foreground: #0A233F;
+  --card: #F2F4FA;
+  --card-foreground: #0A233F;
+  --popover: #ffffff;
+  --popover-foreground: #0A233F;
+  --primary: #0A233F;
+  --primary-foreground: #ffffff;
+  --secondary: #F2F4FA;
+  --secondary-foreground: #0A233F;
+  --muted: #E5E8F0;
+  --muted-foreground: #6B7280;
+  --accent: #F2F4FA;
+  --accent-foreground: #0A233F;
+  --destructive: #d4183d;
+  --destructive-foreground: #ffffff;
+  --border: rgba(0, 0, 0, 0.1);
+  --input-background: #F2F4FA;
+  --ring: #0A233F;
+
+  /* Sidebar — dark navy in the real designs */
+  --sidebar: #0A233F;
+  --sidebar-foreground: #ffffff;
+  --sidebar-primary: #ffffff;
+  --sidebar-primary-foreground: #0A233F;
+  --sidebar-accent: rgba(255, 255, 255, 0.08);
+  --sidebar-accent-foreground: #ffffff;
+  --sidebar-border: rgba(255, 255, 255, 0.1);
+  --sidebar-ring: #ffffff;
+
+  /* Charts */
+  --chart-1: #0A233F;
+  --chart-2: #1e3a5f;
+  --chart-3: #3b5998;
+  --chart-4: #6B7280;
+  --chart-5: #F2F4FA;
+
+  /* Status badge palette (derived from Figma claim status pills) */
+  --status-open-bg: #DBEAFE;
+  --status-open-fg: #1E40AF;
+  --status-in-process-bg: #FEF3C7;
+  --status-in-process-fg: #92400E;
+  --status-invoiced-bg: #E9D5FF;
+  --status-invoiced-fg: #6B21A8;
+  --status-exported-bg: #D1FAE5;
+  --status-exported-fg: #065F46;
+  --status-cancelled-bg: #FEE2E2;
+  --status-cancelled-fg: #991B1B;
+  --status-credited-bg: #FED7AA;
+  --status-credited-fg: #9A3412;
+  --status-credited-exported-bg: #99F6E4;
+  --status-credited-exported-fg: #134E4A;
+
+  /* Radii */
+  --radius: 0.5rem;
+
+  /* Typography */
+  --font-size: 16px;
+  --font-weight-medium: 500;
+  --font-weight-normal: 400;
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-destructive-foreground: var(--destructive-foreground);
+  --color-border: var(--border);
+  --color-input-background: var(--input-background);
+  --color-ring: var(--ring);
+
+  --color-sidebar: var(--sidebar);
+  --color-sidebar-foreground: var(--sidebar-foreground);
+  --color-sidebar-primary: var(--sidebar-primary);
+  --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
+  --color-sidebar-accent: var(--sidebar-accent);
+  --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
+  --color-sidebar-border: var(--sidebar-border);
+  --color-sidebar-ring: var(--sidebar-ring);
+
+  --color-chart-1: var(--chart-1);
+  --color-chart-2: var(--chart-2);
+  --color-chart-3: var(--chart-3);
+  --color-chart-4: var(--chart-4);
+  --color-chart-5: var(--chart-5);
+
+  --radius-sm: calc(var(--radius) - 4px);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) + 4px);
+}
+
+@layer base {
+  html {
+    font-size: var(--font-size);
+  }
+
+  body {
+    background-color: var(--background);
+    color: var(--foreground);
+    font-family:
+      -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen,
+      Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  /* Browsers default <button> to cursor: default. Override so any
+     non-disabled interactive element shows the pointer on hover. */
+  button:not(:disabled),
+  [role='button']:not([aria-disabled='true']),
+  [role='tab']:not([aria-disabled='true']),
+  [role='menuitem']:not([aria-disabled='true']),
+  summary {
+    cursor: pointer;
+  }
+}

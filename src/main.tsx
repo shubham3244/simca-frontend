@@ -1,4 +1,5 @@
 import { StrictMode } from 'react'
+import './styles/index.css';
 import { createRoot } from 'react-dom/client'
 import App from './app/App.tsx'
 import { Provider } from 'react-redux'
