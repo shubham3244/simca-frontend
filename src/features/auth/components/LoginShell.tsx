@@ -10,6 +10,7 @@ import { REDIRECT_AFTER_LOGIN_KEY } from '../../../router/guards/RequireAuth';
 import type { ApiErrorResponse } from '../../../types/api.types';
 import { loginThunk } from '../store/auth.slice';
 import type { Portal } from '../store/auth.types';
+import { DevPortalSwitcher } from './DevPortalSwitcher';
 
 interface LoginShellProps {
   portal: Portal;
@@ -233,6 +234,8 @@ export function LoginShell({
               Sign in
             </Button>
           </form>
+
+          <DevPortalSwitcher currentPortal={portal} />
         </div>
       </main>
     </div>
