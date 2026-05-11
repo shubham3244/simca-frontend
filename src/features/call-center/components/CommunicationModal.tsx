@@ -251,10 +251,10 @@ function MessageBubble({ message }: { message: ChatMessage }) {
 
       <div
         className={cn(
-          'max-w-[85%] rounded-lg px-4 py-2.5 text-sm',
+          'max-w-[85%] rounded-lg px-4 py-2.5 text-sm shadow-sm',
           isAgent
             ? 'bg-primary text-primary-foreground'
-            : 'bg-background text-foreground border border-border',
+            : 'bg-background text-foreground',
         )}
       >
         {message.body}

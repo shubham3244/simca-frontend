@@ -1,6 +1,8 @@
 import type { ReactNode } from 'react';
 import { Button } from '../../../components/ui/Button';
+import { MaskedField } from '../../../components/ui/MaskedField';
 import { ProgressBar } from '../../../components/ui/ProgressBar';
+import { maskEmail, maskPhone, maskVin } from '../../../lib/pii/mask';
 import { cn } from '../../../utils/cn';
 import { formatCurrency, formatDate, formatYesNo } from '../../../utils/format';
 import type {
@@ -22,8 +24,14 @@ export function ClaimInfoTab({
   return (
     <div className="flex flex-col gap-6">
       <ClaimInformationSection claim={claim} />
-      <CustomerInformationSection customer={claim.customer} />
-      <VehicleInformationSection vehicle={claim.vehicle} />
+      <CustomerInformationSection
+        customer={claim.customer}
+        controlNo={claim.controlNo}
+      />
+      <VehicleInformationSection
+        vehicle={claim.vehicle}
+        controlNo={claim.controlNo}
+      />
       <WorkOrderNotesSection notes={claim.workOrderNotes} />
       <ConfidenceScoreSection score={claim.confidenceScore} />
       <RecommendedPartsSection
@@ -124,8 +132,10 @@ function ClaimInformationSection({ claim }: { claim: ClaimDetail }) {
 
 function CustomerInformationSection({
   customer,
+  controlNo,
 }: {
   customer: ClaimDetail['customer'];
+  controlNo: string;
 }) {
   return (
     <Section title="Customer Information">
@@ -136,8 +146,22 @@ function CustomerInformationSection({
         <FieldRow label="City">{customer.city}</FieldRow>
         <FieldRow label="Province/State">{customer.provinceState}</FieldRow>
         <FieldRow label="Postal Code">{customer.postalCode}</FieldRow>
-        <FieldRow label="Email">{customer.email}</FieldRow>
-        <FieldRow label="Phone">{customer.phone}</FieldRow>
+        <FieldRow label="Email">
+          <MaskedField
+            value={customer.email}
+            mask={maskEmail}
+            fieldName="email"
+            resourceId={controlNo}
+          />
+        </FieldRow>
+        <FieldRow label="Phone">
+          <MaskedField
+            value={customer.phone}
+            mask={maskPhone}
+            fieldName="phone"
+            resourceId={controlNo}
+          />
+        </FieldRow>
       </FieldGrid>
     </Section>
   );
@@ -145,8 +169,10 @@ function CustomerInformationSection({
 
 function VehicleInformationSection({
   vehicle,
+  controlNo,
 }: {
   vehicle: ClaimDetail['vehicle'];
+  controlNo: string;
 }) {
   return (
     <Section title="Vehicle Information">
@@ -155,7 +181,14 @@ function VehicleInformationSection({
         <FieldRow label="Make">{vehicle.make}</FieldRow>
         <FieldRow label="Model">{vehicle.model}</FieldRow>
         <FieldRow label="Body Style">{vehicle.bodyStyle}</FieldRow>
-        <FieldRow label="VIN">{vehicle.vin}</FieldRow>
+        <FieldRow label="VIN">
+          <MaskedField
+            value={vehicle.vin}
+            mask={maskVin}
+            fieldName="VIN"
+            resourceId={controlNo}
+          />
+        </FieldRow>
         <FieldRow label="License Plate Number">{vehicle.licensePlate}</FieldRow>
         <FieldRow label="Odometer Reading">
           {vehicle.odometerKm.toLocaleString()} km

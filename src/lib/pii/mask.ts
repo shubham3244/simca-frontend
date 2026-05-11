@@ -1,5 +1,9 @@
 export function maskPhone(phone: string): string {
-  return phone.replace(/(\d{3})\d{3}(\d{4})/, '($1) ***-$2');
+  // Accept any common format — strip non-digits, then re-format the masked output.
+  // Handles "5551234567", "555-123-4567", "(555) 123-4567", "+1 (555) 123-4567"...
+  const digits = phone.replace(/\D/g, '').slice(-10);
+  if (digits.length !== 10) return phone;
+  return `(${digits.slice(0, 3)}) ***-${digits.slice(6)}`;
 }
 
 export function maskEmail(email: string): string {

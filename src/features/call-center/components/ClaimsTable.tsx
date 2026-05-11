@@ -1,5 +1,7 @@
 import { Link } from 'react-router-dom';
+import { MaskedField } from '../../../components/ui/MaskedField';
 import { StatusBadge } from '../../../components/ui/StatusBadge';
+import { maskPhone } from '../../../lib/pii/mask';
 import type { ClaimSummary } from '../types/claim.types';
 
 interface ClaimsTableProps {
@@ -59,7 +61,14 @@ export function ClaimsTable({ claims, onOpenChat }: ClaimsTableProps) {
                 <td className="py-4 pr-4 text-foreground">{claim.shopName}</td>
                 <td className="py-4 pr-4 text-foreground">{claim.customerLastName}</td>
                 <td className="py-4 pr-4 text-foreground">{claim.customerFirstName}</td>
-                <td className="py-4 pr-4 text-foreground">{claim.phone}</td>
+                <td className="py-4 pr-4 text-foreground">
+                  <MaskedField
+                    value={claim.phone}
+                    mask={maskPhone}
+                    fieldName="phone"
+                    resourceId={claim.controlNo}
+                  />
+                </td>
                 <td className="py-4 pr-4">
                   <StatusBadge status={claim.status} />
                 </td>

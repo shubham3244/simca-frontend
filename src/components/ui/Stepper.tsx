@@ -37,7 +37,21 @@ export function Stepper({
           const canNavigate = onStepClick && index <= safeIndex;
 
           return (
-            <li key={step.label} className="flex flex-col items-center text-center">
+            <li
+              key={step.label}
+              className="relative flex flex-col items-center text-center"
+            >
+              {/* Connecting line from the previous circle */}
+              {index > 0 && (
+                <span
+                  aria-hidden="true"
+                  className={cn(
+                    'absolute top-[18px] h-0.5 -translate-y-1/2',
+                    'left-[calc(-50%+18px)] right-[calc(50%+18px)]',
+                    index <= safeIndex ? 'bg-primary' : 'bg-border',
+                  )}
+                />
+              )}
               <button
                 type="button"
                 onClick={canNavigate ? () => onStepClick(index) : undefined}
