@@ -12,10 +12,9 @@ export function ClaimSubmittedPage() {
   const state = (location.state ?? null) as LocationState | null;
   const referenceNo = state?.referenceNo;
 
-  // If user lands here without a reference number, send them back to the wizard
   useEffect(() => {
     if (!referenceNo) {
-      navigate('/customer', { replace: true });
+      navigate('/customer/claims', { replace: true });
     }
   }, [referenceNo, navigate]);
 
@@ -59,9 +58,17 @@ export function ClaimSubmittedPage() {
           your claim and contact you within 24-48 hours.
         </p>
 
-        <div className="mt-8 flex justify-center">
-          <Button onClick={() => navigate('/customer', { replace: true })}>
+        <div className="mt-8 flex flex-col-reverse justify-center gap-3 sm:flex-row">
+          <Button
+            variant="outline"
+            onClick={() => navigate('/customer/claims/new', { replace: true })}
+          >
             Submit Another Claim
+          </Button>
+          <Button
+            onClick={() => navigate('/customer/claims', { replace: true })}
+          >
+            View My Claims
           </Button>
         </div>
       </div>

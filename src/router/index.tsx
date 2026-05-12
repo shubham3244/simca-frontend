@@ -8,8 +8,6 @@ import { RequireAuth } from './guards/RequireAuth';
 import { RequireRole } from './guards/RequireRole';
 
 // ─── Lazy-loaded portal bundles ────────────────────────────────────────────
-// Each portal becomes its own JS chunk. Customers don't download Call Center
-// code, and vice versa. Login pages stay eager since they're entry points.
 
 // Call Center
 const CallCenterLayout = lazy(() =>
@@ -47,6 +45,16 @@ const BatchedInvoicesPage = lazy(() =>
 const CustomerLayout = lazy(() =>
   import('../features/customer/layouts/CustomerLayout').then((m) => ({
     default: m.CustomerLayout,
+  })),
+);
+const MyClaimsPage = lazy(() =>
+  import('../features/customer/pages/MyClaimsPage').then((m) => ({
+    default: m.MyClaimsPage,
+  })),
+);
+const CustomerClaimDetailPage = lazy(() =>
+  import('../features/customer/pages/CustomerClaimDetailPage').then((m) => ({
+    default: m.CustomerClaimDetailPage,
   })),
 );
 const SubmitClaimPage = lazy(() =>
@@ -128,7 +136,13 @@ export const router = createBrowserRouter([
             path: '/customer',
             element: lazyEl(CustomerLayout),
             children: [
-              { index: true, element: lazyEl(SubmitClaimPage) },
+              { index: true, element: <Navigate to="claims" replace /> },
+              { path: 'claims', element: lazyEl(MyClaimsPage) },
+              { path: 'claims/new', element: lazyEl(SubmitClaimPage) },
+              {
+                path: 'claims/:referenceNo',
+                element: lazyEl(CustomerClaimDetailPage),
+              },
               { path: 'submitted', element: lazyEl(ClaimSubmittedPage) },
             ],
           },
