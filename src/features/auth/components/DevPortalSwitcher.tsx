@@ -11,6 +11,7 @@ const ALL_PORTALS: PortalLink[] = [
   { portal: 'CALL_CENTER', label: 'Call Center', loginPath: '/call-center/login' },
   { portal: 'CUSTOMER', label: 'Customer', loginPath: '/customer/login' },
   { portal: 'INSURER', label: 'Insurer', loginPath: '/insurer/login' },
+  { portal: 'WORKSHOP', label: 'Workshop', loginPath: '/workshop/login' },
 ];
 
 interface DevPortalSwitcherProps {

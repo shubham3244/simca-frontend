@@ -4,6 +4,7 @@ import { FullPageSpinner } from '../components/ui/FullPageSpinner';
 import { CallCenterLoginPage } from '../features/auth/pages/CallCenterLoginPage';
 import { CustomerLoginPage } from '../features/auth/pages/CustomerLoginPage';
 import { InsurerLoginPage } from '../features/auth/pages/InsurerLoginPage';
+import { WorkshopLoginPage } from '../features/auth/pages/WorkshopLoginPage';
 import { RequireAnon } from './guards/RequireAnon';
 import { RequireAuth } from './guards/RequireAuth';
 import { RequireRole } from './guards/RequireRole';
@@ -54,6 +55,28 @@ const InsurerDashboardPage = lazy(() =>
   })),
 );
 
+// Workshop
+const WorkshopLayout = lazy(() =>
+  import('../features/workshop/layouts/WorkshopLayout').then((m) => ({
+    default: m.WorkshopLayout,
+  })),
+);
+const WorkshopDashboardPage = lazy(() =>
+  import('../features/workshop/pages/WorkshopDashboardPage').then((m) => ({
+    default: m.WorkshopDashboardPage,
+  })),
+);
+const WorkshopWorkOrdersPage = lazy(() =>
+  import('../features/workshop/pages/WorkshopWorkOrdersPage').then((m) => ({
+    default: m.WorkshopWorkOrdersPage,
+  })),
+);
+const WorkshopJobDetailPage = lazy(() =>
+  import('../features/workshop/pages/WorkshopJobDetailPage').then((m) => ({
+    default: m.WorkshopJobDetailPage,
+  })),
+);
+
 // Customer
 const CustomerLayout = lazy(() =>
   import('../features/customer/layouts/CustomerLayout').then((m) => ({
@@ -98,6 +121,7 @@ export const router = createBrowserRouter([
       { path: '/call-center/login', element: <CallCenterLoginPage /> },
       { path: '/customer/login', element: <CustomerLoginPage /> },
       { path: '/insurer/login', element: <InsurerLoginPage /> },
+      { path: '/workshop/login', element: <WorkshopLoginPage /> },
     ],
   },
 
@@ -177,6 +201,41 @@ export const router = createBrowserRouter([
             element: lazyEl(InsurerLayout),
             children: [
               { index: true, element: lazyEl(InsurerDashboardPage) },
+            ],
+          },
+        ],
+      },
+    ],
+  },
+
+  // Protected — Workshop
+  {
+    element: <RequireAuth loginPath="/workshop/login" />,
+    children: [
+      {
+        element: <RequireRole allowed={['WORKSHOP']} />,
+        children: [
+          {
+            path: '/workshop',
+            element: lazyEl(WorkshopLayout),
+            children: [
+              { index: true, element: lazyEl(WorkshopDashboardPage) },
+              { path: 'work-orders', element: lazyEl(WorkshopWorkOrdersPage) },
+              {
+                path: 'work-orders/:workOrderNo',
+                element: lazyEl(WorkshopJobDetailPage),
+              },
+              {
+                path: 'settings',
+                element: (
+                  <div className="rounded-lg bg-card p-6">
+                    <h1 className="text-xl font-semibold text-foreground">Settings</h1>
+                    <p className="mt-2 text-sm text-muted-foreground">
+                      Settings configuration coming soon...
+                    </p>
+                  </div>
+                ),
+              },
             ],
           },
         ],
