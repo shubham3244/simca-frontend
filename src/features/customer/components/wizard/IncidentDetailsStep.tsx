@@ -81,9 +81,9 @@ export function IncidentDetailsStep({
           {...register('policyNumber', { required: 'Policy number is required' })}
         />
         <Input
-          label="Claim Number (if available)"
+          label="Claim Number"
           placeholder="CLM-2024-67890"
-          helperText="Optional — leave blank if you haven't filed with your carrier yet"
+          helperText="Leave blank if you haven't filed with your carrier yet"
           error={errors.claimNumber?.message}
           {...register('claimNumber')}
         />

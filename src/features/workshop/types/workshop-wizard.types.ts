@@ -21,7 +21,7 @@ export interface WorkshopClaimWizardValues {
   vehicleYear: string;
   vehicleMake: string;
   vehicleModel: string;
-  vehicleColor: string;
+  vehicleLicensePlate: string;
   vehicleVin: string;
   vehicleOdometer: string;
 }
@@ -51,7 +51,7 @@ export const WORKSHOP_STEP_FIELDS: Record<number, WorkshopClaimWizardField[]> = 
     'vehicleYear',
     'vehicleMake',
     'vehicleModel',
-    'vehicleColor',
+    'vehicleLicensePlate',
     'vehicleVin',
     'vehicleOdometer',
   ],
@@ -79,7 +79,7 @@ export function emptyWorkshopWizardValues(): WorkshopClaimWizardValues {
     vehicleYear: '',
     vehicleMake: '',
     vehicleModel: '',
-    vehicleColor: '',
+    vehicleLicensePlate: '',
     vehicleVin: '',
     vehicleOdometer: '',
   };

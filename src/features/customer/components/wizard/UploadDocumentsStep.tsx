@@ -43,7 +43,7 @@ export function UploadDocumentsStep({
           files={supportingDocs}
           onFilesChange={onSupportingDocsChange}
           primaryHint="Drag and drop documents here, or click to browse"
-          secondaryHint="Optional: Police report, insurance documents, etc."
+          secondaryHint="Police report, insurance documents, etc."
         />
       </div>
     </section>

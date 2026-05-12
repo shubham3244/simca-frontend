@@ -38,6 +38,7 @@ export function WorkshopNewClaimWizard({ onCancel }: WorkshopNewClaimWizardProps
   const confirm = useConfirm();
   const [step, setStep] = useState(0);
   const [damagePhotos, setDamagePhotos] = useState<File[]>([]);
+  const [supportingDocs, setSupportingDocs] = useState<File[]>([]);
   const [photosError, setPhotosError] = useState<string | undefined>();
   const [submitting, setSubmitting] = useState(false);
 
@@ -69,7 +70,7 @@ export function WorkshopNewClaimWizard({ onCancel }: WorkshopNewClaimWizardProps
   };
 
   const handleCancel = async () => {
-    if (isDirty || damagePhotos.length) {
+    if (isDirty || damagePhotos.length || supportingDocs.length) {
       const ok = await confirm({
         title: 'Discard this submission?',
         message: 'Your progress will be lost.',
@@ -101,6 +102,7 @@ export function WorkshopNewClaimWizard({ onCancel }: WorkshopNewClaimWizardProps
         workOrderNo,
         ...values,
         damagePhotos: damagePhotos.map((f) => f.name),
+        supportingDocs: supportingDocs.map((f) => f.name),
       });
       await confirm({
         title: 'Submission received',
@@ -128,12 +130,14 @@ export function WorkshopNewClaimWizard({ onCancel }: WorkshopNewClaimWizardProps
         {step === 2 && <VehicleStep register={register} errors={errors} />}
         {step === 3 && (
           <UploadStep
-            files={damagePhotos}
-            error={photosError}
-            onFilesChange={(next) => {
+            damagePhotos={damagePhotos}
+            supportingDocs={supportingDocs}
+            damagePhotosError={photosError}
+            onDamagePhotosChange={(next) => {
               setDamagePhotos(next);
               if (next.length > 0) setPhotosError(undefined);
             }}
+            onSupportingDocsChange={setSupportingDocs}
           />
         )}
 
@@ -230,9 +234,9 @@ function IncidentStep({ register, errors }: StepProps) {
           })}
         />
         <Input
-          label="Claim Number (if available)"
+          label="Claim Number"
           placeholder="CLM-2024-67890"
-          helperText="Optional — leave blank if the carrier hasn’t opened a claim yet"
+          helperText="Leave blank if the carrier hasn’t opened a claim yet"
           error={errors.claimNumber?.message}
           {...register('claimNumber')}
         />
@@ -346,14 +350,13 @@ function VehicleStep({ register, errors }: StepProps) {
           {...register('vehicleModel', { required: 'Model is required' })}
         />
         <Input
-          label="Color"
-          required
-          placeholder="Silver"
-          error={errors.vehicleColor?.message}
-          {...register('vehicleColor', { required: 'Color is required' })}
+          label="License Plate Number"
+          placeholder="ABC-1234"
+          error={errors.vehicleLicensePlate?.message}
+          {...register('vehicleLicensePlate')}
         />
         <Input
-          label="VIN"
+          label="VIN (Vehicle Identification Number)"
           required
           placeholder="1HGBH41JXMN109186"
           error={errors.vehicleVin?.message}
@@ -364,7 +367,7 @@ function VehicleStep({ register, errors }: StepProps) {
           })}
         />
         <Input
-          label="Odometer (km)"
+          label="Odometer Reading"
           required
           inputMode="numeric"
           placeholder="45000"
@@ -379,13 +382,68 @@ function VehicleStep({ register, errors }: StepProps) {
 }
 
 function UploadStep({
-  files,
-  error,
-  onFilesChange,
+  damagePhotos,
+  supportingDocs,
+  damagePhotosError,
+  onDamagePhotosChange,
+  onSupportingDocsChange,
 }: {
+  damagePhotos: File[];
+  supportingDocs: File[];
+  damagePhotosError?: string;
+  onDamagePhotosChange: (files: File[]) => void;
+  onSupportingDocsChange: (files: File[]) => void;
+}) {
+  return (
+    <section>
+      <h2 className="text-2xl font-bold text-foreground">Upload Documents</h2>
+      <p className="mt-1 text-sm text-muted-foreground">
+        Attach photos of the damage and any supporting documents.
+      </p>
+
+      <div className="mt-6 flex flex-col gap-6">
+        <DropZone
+          label="Photos of Damage"
+          required
+          accept="image/*"
+          files={damagePhotos}
+          onFilesChange={onDamagePhotosChange}
+          primaryHint="Drag and drop photos here, or click to browse"
+          secondaryHint="Recommended: Multiple angles showing the full extent of damage"
+          error={damagePhotosError}
+        />
+
+        <DropZone
+          label="Supporting Documents"
+          accept="image/*,application/pdf"
+          files={supportingDocs}
+          onFilesChange={onSupportingDocsChange}
+          primaryHint="Drag and drop documents here, or click to browse"
+          secondaryHint="Police report, insurance documents, etc."
+        />
+      </div>
+    </section>
+  );
+}
+
+function DropZone({
+  label,
+  required,
+  accept,
+  files,
+  onFilesChange,
+  primaryHint,
+  secondaryHint,
+  error,
+}: {
+  label: string;
+  required?: boolean;
+  accept: string;
   files: File[];
-  error?: string;
   onFilesChange: (files: File[]) => void;
+  primaryHint: string;
+  secondaryHint: string;
+  error?: string;
 }) {
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
     const list = e.target.files;
@@ -399,15 +457,14 @@ function UploadStep({
   };
 
   return (
-    <section>
-      <h2 className="text-2xl font-bold text-foreground">Upload Documents</h2>
-      <p className="mt-1 text-sm text-muted-foreground">
-        Attach photos of the damage. These are required by the carrier before
-        the claim can move forward.
-      </p>
+    <div className="flex flex-col gap-2">
+      <span className="text-sm font-medium text-foreground">
+        {label}
+        {required && <span className="ml-0.5 text-destructive">*</span>}
+      </span>
 
       <label
-        className={`mt-6 flex cursor-pointer flex-col items-center justify-center rounded-md border-2 border-dashed bg-background px-6 py-10 text-center transition-colors hover:border-primary/40 ${
+        className={`flex cursor-pointer flex-col items-center justify-center rounded-md border-2 border-dashed bg-background px-6 py-10 text-center transition-colors hover:border-primary/40 ${
           error ? 'border-destructive' : 'border-border'
         }`}
       >
@@ -425,25 +482,21 @@ function UploadStep({
           <polyline points="17 8 12 3 7 8" />
           <line x1="12" y1="3" x2="12" y2="15" />
         </svg>
-        <p className="mt-3 text-sm font-medium text-foreground">
-          Click to add photos of the damage
-        </p>
-        <p className="mt-1 text-xs text-muted-foreground">
-          Multiple angles preferred — chip, surround, and any pre-existing damage
-        </p>
+        <p className="mt-3 text-sm font-medium text-foreground">{primaryHint}</p>
+        <p className="mt-1 text-xs text-muted-foreground">{secondaryHint}</p>
         <input
           type="file"
-          accept="image/*"
+          accept={accept}
           multiple
           onChange={handleChange}
           className="hidden"
         />
       </label>
 
-      {error && <p className="mt-2 text-xs text-destructive">{error}</p>}
+      {error && <p className="text-xs text-destructive">{error}</p>}
 
       {files.length > 0 && (
-        <ul className="mt-4 flex flex-col gap-1.5">
+        <ul className="mt-2 flex flex-col gap-1.5">
           {files.map((file, i) => (
             <li
               key={`${file.name}-${i}`}
@@ -474,6 +527,6 @@ function UploadStep({
           ))}
         </ul>
       )}
-    </section>
+    </div>
   );
 }
