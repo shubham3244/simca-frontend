@@ -3,6 +3,7 @@ import { createBrowserRouter, Navigate } from 'react-router-dom';
 import { FullPageSpinner } from '../components/ui/FullPageSpinner';
 import { CallCenterLoginPage } from '../features/auth/pages/CallCenterLoginPage';
 import { CustomerLoginPage } from '../features/auth/pages/CustomerLoginPage';
+import { InsurerLoginPage } from '../features/auth/pages/InsurerLoginPage';
 import { RequireAnon } from './guards/RequireAnon';
 import { RequireAuth } from './guards/RequireAuth';
 import { RequireRole } from './guards/RequireRole';
@@ -38,6 +39,18 @@ const NewClaimPage = lazy(() =>
 const BatchedInvoicesPage = lazy(() =>
   import('../features/call-center/pages/BatchedInvoicesPage').then((m) => ({
     default: m.BatchedInvoicesPage,
+  })),
+);
+
+// Insurer
+const InsurerLayout = lazy(() =>
+  import('../features/insurer/layouts/InsurerLayout').then((m) => ({
+    default: m.InsurerLayout,
+  })),
+);
+const InsurerDashboardPage = lazy(() =>
+  import('../features/insurer/pages/InsurerDashboardPage').then((m) => ({
+    default: m.InsurerDashboardPage,
   })),
 );
 
@@ -84,6 +97,7 @@ export const router = createBrowserRouter([
     children: [
       { path: '/call-center/login', element: <CallCenterLoginPage /> },
       { path: '/customer/login', element: <CustomerLoginPage /> },
+      { path: '/insurer/login', element: <InsurerLoginPage /> },
     ],
   },
 
@@ -144,6 +158,25 @@ export const router = createBrowserRouter([
                 element: lazyEl(CustomerClaimDetailPage),
               },
               { path: 'submitted', element: lazyEl(ClaimSubmittedPage) },
+            ],
+          },
+        ],
+      },
+    ],
+  },
+
+  // Protected — Insurer
+  {
+    element: <RequireAuth loginPath="/insurer/login" />,
+    children: [
+      {
+        element: <RequireRole allowed={['INSURER']} />,
+        children: [
+          {
+            path: '/insurer',
+            element: lazyEl(InsurerLayout),
+            children: [
+              { index: true, element: lazyEl(InsurerDashboardPage) },
             ],
           },
         ],

@@ -1,13 +1,19 @@
 export type UserRole =
   | 'CALL_CENTER_AGENT'
   | 'CUSTOMER'
+  | 'INSURER'
   | 'WORKSHOP'
   | 'TECHNICIAN'
   | 'MANAGER'
   | 'CSR'
   | 'ADMIN';
 
-export type Portal = 'CALL_CENTER' | 'CUSTOMER' | 'WORKSHOP' | 'TECHNICIAN';
+export type Portal =
+  | 'CALL_CENTER'
+  | 'CUSTOMER'
+  | 'INSURER'
+  | 'WORKSHOP'
+  | 'TECHNICIAN';
 
 export interface User {
   id: string;

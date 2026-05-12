@@ -9,6 +9,8 @@ export function roleHomePath(role: UserRole): string {
       return '/call-center';
     case 'CUSTOMER':
       return '/customer';
+    case 'INSURER':
+      return '/insurer';
     case 'WORKSHOP':
       return '/workshop';
     case 'TECHNICIAN':
@@ -21,6 +23,7 @@ export function roleHomePath(role: UserRole): string {
 export const roleLabels: Record<UserRole, string> = {
   CALL_CENTER_AGENT: 'Call Center Agent',
   CUSTOMER: 'Customer',
+  INSURER: 'Insurer',
   WORKSHOP: 'Workshop',
   TECHNICIAN: 'Technician',
   CSR: 'CSR',
@@ -32,6 +35,8 @@ export const roleDescriptions: Partial<Record<UserRole, string>> = {
   CALL_CENTER_AGENT:
     'Manage customer claims, track SLA metrics, and coordinate between all parties',
   CUSTOMER: 'Submit windshield damage claims and track repair status',
+  INSURER:
+    'Review claims, approve payments, and audit financial activity',
   WORKSHOP: 'Receive work orders and update claim progress',
   TECHNICIAN: 'View assigned jobs and submit completion reports',
   CSR: 'Handle customer service requests and escalations',

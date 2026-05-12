@@ -14,6 +14,7 @@ function delay(ms = 350) {
 const PORTAL_TO_DEFAULT_ROLE: Record<Portal, UserRole> = {
   CALL_CENTER: 'CALL_CENTER_AGENT',
   CUSTOMER: 'CUSTOMER',
+  INSURER: 'INSURER',
   WORKSHOP: 'WORKSHOP',
   TECHNICIAN: 'TECHNICIAN',
 };
